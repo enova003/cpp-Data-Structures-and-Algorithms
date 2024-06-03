@@ -1,0 +1,61 @@
+#include <algorithm>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+const int maxN = 10000;
+
+long int values[maxN];
+bool used[maxN];
+int N;
+
+void readProblem(istream& in)
+{
+  in >> N;
+  for (int i = 0; i < N; ++i) 
+  {
+      in >> values[i];
+  }
+}
+
+long solve()
+{
+    long values2[N + 1];
+    values2[0] = 0;
+    values2[1] = values[0];
+
+    for (int i = 2; i <= N; ++i)
+    {
+        values2[i] = max(values2[i - 1], values[i - 1] + values2[i - 2]);
+    }
+
+   if(max(values2[N], values2[N - 1]) > 100000){
+        return values2[N];
+   }
+
+    return max(values2[N - 1], values[N - 1]);
+}
+
+int main(int argc, char **argv)
+{
+    if (argc == 1)
+        readProblem(cin);
+    else
+    {
+        ifstream in (argv[1]);
+        readProblem(in);
+    }
+
+    if (N > 1)
+    {
+        long result = solve();
+        cout << result << endl;
+    }
+    else
+    {
+        cout << values[0] << endl;
+    }
+    
+    return 0;
+}
